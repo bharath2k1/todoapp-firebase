@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ListItem from "./ListItem";
+
+import "./App.css";
 
 function App() {
+  const [input, setinput] = useState("");
+  const [item, setitem] = useState(["I'm bharath simha reddy"]);
+  const onButtonSubmit = () => {
+    setitem([...item, input]);
+  };
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    setinput("");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>React todo app with firebase</h1>
+      <form onSubmit={onFormSubmit}>
+        <input value={input} onChange={(e) => setinput(e.target.value)} />
+        <button disabled={!input} onClick={onButtonSubmit}>
+          ADD
+        </button>
+      </form>
+
+      <div>
+        <ListItem item={item} />
+      </div>
     </div>
   );
 }
