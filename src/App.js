@@ -4,17 +4,19 @@ import db from "./firebase";
 import firebase from "firebase";
 
 import "./App.css";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Container } from "@material-ui/core";
 
 function App() {
   const [input, setinput] = useState("");
-  const [item, setitem] = useState([]);
+  const [items, setitem] = useState([]);
 
   useEffect(() => {
     db.collection("todos")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        setitem(snapshot.docs.map((doc) => doc.data().todo));
+        setitem(
+          snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todo }))
+        );
       });
   }, []);
 
@@ -31,7 +33,7 @@ function App() {
   return (
     <div className="App">
       <h1>React todo app with firebase</h1>
-      <form onSubmit={onFormSubmit}>
+      <form onSubmit={onFormSubmit} style={{ paddingBottom: "15px" }}>
         <TextField
           value={input}
           onChange={(e) => setinput(e.target.value)}
@@ -45,14 +47,14 @@ function App() {
           variant="contained"
           color="primary"
         >
-          ADD
+          ADD TO LIST
         </Button>
       </form>
-      <div>
-        {item.map((items) => (
-          <ListItems item={items} />
+      <Container maxWidth="sm">
+        {items.map((item) => (
+          <ListItems items={item} />
         ))}
-      </div>
+      </Container>
     </div>
   );
 }
