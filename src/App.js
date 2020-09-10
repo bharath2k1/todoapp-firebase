@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ListItems from "./ListItem";
+import db from "./firebase";
+import firebase from "firebase";
 
 import "./App.css";
 import { TextField, Button } from "@material-ui/core";
 
 function App() {
   const [input, setinput] = useState("");
-  const [item, setitem] = useState(["I'm bharath simha reddy"]);
+  const [item, setitem] = useState([]);
+
+  useEffect(() => {
+    db.collection("todos")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setitem(snapshot.docs.map((doc) => doc.data().todo));
+      });
+  }, []);
 
   const onFormSubmit = (event) => {
     event.preventDefault();
-    setitem([...item, input]);
+    // setitem([...item, input]);
+    db.collection("todos").add({
+      todo: input,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
     setinput("");
   };
 
