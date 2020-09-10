@@ -1,15 +1,14 @@
 import React from "react";
+import { ListItem, ListItemText, List } from "@material-ui/core";
 
-function ListItem({ item }) {
+function ListItems({ item }) {
   return (
-    <div>
-      <ul>
-        {item.map((items) => (
-          <li>{items}</li>
-        ))}
-      </ul>
-    </div>
+    <List>
+      <ListItem>
+        <ListItemText primary={item} />
+      </ListItem>
+    </List>
   );
 }
 
-export default ListItem;
+export default ListItems;

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import ListItem from "./ListItem";
+import ListItems from "./ListItem";
 
 import "./App.css";
+import { TextField, Button } from "@material-ui/core";
 
 function App() {
   const [input, setinput] = useState("");
   const [item, setitem] = useState(["I'm bharath simha reddy"]);
-  const onButtonSubmit = () => {
-    setitem([...item, input]);
-  };
+
   const onFormSubmit = (event) => {
     event.preventDefault();
+    setitem([...item, input]);
     setinput("");
   };
 
@@ -18,14 +18,26 @@ function App() {
     <div className="App">
       <h1>React todo app with firebase</h1>
       <form onSubmit={onFormSubmit}>
-        <input value={input} onChange={(e) => setinput(e.target.value)} />
-        <button disabled={!input} onClick={onButtonSubmit}>
-          ADD
-        </button>
-      </form>
+        <TextField
+          value={input}
+          onChange={(e) => setinput(e.target.value)}
+          id="standard-basic"
+          label="write a todo"
+        />
 
+        <Button
+          disabled={!input}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
+          ADD
+        </Button>
+      </form>
       <div>
-        <ListItem item={item} />
+        {item.map((items) => (
+          <ListItems item={items} />
+        ))}
       </div>
     </div>
   );
